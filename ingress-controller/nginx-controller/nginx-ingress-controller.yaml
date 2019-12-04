@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1beta2
 kind: Deployment
 metadata:
   name: nginx-controller-ingress-controller-controller
@@ -12,6 +12,15 @@ spec:
     matchLabels:
       app.kubernetes.io/name: ingress-controller-nginx-controller
       app.kubernetes.io/part-of: ingress-controller-nginx-controller
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: # 部署到ingress=true的node上
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: ingress-controller
+                operator: In
+                values:
+                  - true
   template:
     metadata:
       labels:
@@ -26,15 +35,7 @@ spec:
       serviceAccountName: nginx-controller-ingress-controller-serviceaccount
       nodeSelector:
         kubernetes.io/os: linux
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution: # 部署到ingress=true的node上
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: ingress-controller
-                    operator: In
-                    values:
-                      - true
+
       containers:
         - name: nginx-controller-ingress-controller-controller
           image: quay.io/kubernetes-ingress-controller-controller/nginx-controller-ingress-controller-controller:0.26.1
