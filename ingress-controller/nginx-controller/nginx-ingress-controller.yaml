@@ -23,14 +23,13 @@ spec:
     spec:
       affinity:
         podAffinity:
-          requiredDuringSchedulingRequiredDuringExecution:
+          requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchExpressions:
-                  - key: ingress-controller
+                  - key: ingres-controller
                     operator: In
                     values:
                       - true
-              topologyKey: "kubernetes.io/hostname"
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
       serviceAccountName: nginx-controller-ingress-controller-serviceaccount
