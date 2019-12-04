@@ -32,7 +32,7 @@ spec:
                       - "true"
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
-      serviceAccountName: nginx-controller-serviceaccount
+      serviceAccountName: nginx-ingress-serviceaccount
       nodeSelector:
         kubernetes.io/os: linux
       containers:
