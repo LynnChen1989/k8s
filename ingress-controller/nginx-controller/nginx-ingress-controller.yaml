@@ -38,7 +38,7 @@ spec:
 
       containers:
         - name: nginx-controller-ingress-controller-controller
-          image: quay.io/kubernetes-ingress-controller-controller/nginx-controller-ingress-controller-controller:0.26.1
+          image: registry.aliyuncs.com/google_containers/nginx-ingress-controller:0.26.1
           args:
             - /nginx-controller-ingress-controller-controller
             - --configmap=$(POD_NAMESPACE)/nginx-controller-configuration
