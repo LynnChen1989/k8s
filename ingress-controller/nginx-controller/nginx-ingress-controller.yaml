@@ -20,26 +20,16 @@ spec:
       annotations:
         prometheus.io/port: "10254"
         prometheus.io/scrape: "true"
-        scheduler.alpha.kubernetes.io/affinity: >
-          {
-            "podAntiAffinity": {
-              "requiredDuringSchedulingIgnoredDuringExecution": [
-                {
-                  "labelSelector": {
-                    "matchExpressions": [
-                      {
-                        "key": "ingress-controller",
-                        "operator": "In",
-                        "values": ["true"]
-                      }
-                    ]
-                  },
-                  "topologyKey": "tor"
-                }
-              ]
-            }
-          }
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: ingress-controller
+                    operator: In
+                    values:
+                      - true
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
       serviceAccountName: nginx-controller-ingress-controller-serviceaccount
