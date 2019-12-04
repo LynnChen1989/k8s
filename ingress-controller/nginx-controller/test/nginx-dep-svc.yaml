@@ -1,0 +1,42 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: snakechen
+spec:
+  selector:
+    matchLabels:
+      app: snake-dep-nginx
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: snake-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.7.9
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-nginx
+  name: svc-nginx
+  namespace: snakechen
+spec:
+  ports:
+  - name: tcp-80-80
+    nodePort: 30538
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: snake-dep-nginx
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}

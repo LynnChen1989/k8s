@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  generation: 1
+  name: snake-test-ingress
+  namespace: snakechen
+spec:
+  rules:
+  - host: snake-test.xwfintech.com
+    http:
+      paths:
+      - backend:
+          serviceName: snake-svc-nginx
+          servicePort: 80
+        path: /
+  tls:
+  - hosts:
+    - snake-test.xwfintech.com
+    secretName: xwfintech.com
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.168.0.99
