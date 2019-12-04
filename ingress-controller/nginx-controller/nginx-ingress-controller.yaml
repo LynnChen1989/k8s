@@ -22,14 +22,15 @@ spec:
         prometheus.io/scrape: "true"
     spec:
       affinity:
-        podAffinity:
+        nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: ingres-controller
-                    operator: In
-                    values:
-                      - true
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/e2e-az-name
+                      operator: In
+                      values:
+                        - e2e-az1
+                        - e2e-az2
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
       serviceAccountName: nginx-controller-ingress-controller-serviceaccount
