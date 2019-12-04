@@ -22,8 +22,8 @@ spec:
         prometheus.io/scrape: "true"
     spec:
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
+        podAffinity:
+          requiredDuringSchedulingRequiredDuringExecution:
             - labelSelector:
                 matchExpressions:
                   - key: ingress-controller
