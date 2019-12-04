@@ -1,1 +1,1 @@
-# snake k8s study record
+# snake k8s yaml

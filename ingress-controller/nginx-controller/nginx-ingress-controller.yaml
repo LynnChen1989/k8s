@@ -7,15 +7,6 @@ metadata:
     app.kubernetes.io/name: ingress-controller-nginx-controller
     app.kubernetes.io/part-of: ingress-controller-nginx-controller
 spec:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution: # 部署到ingress=true的node上
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: ingress-controller
-                operator: In
-                values:
-                  - true
   replicas: 1
   selector:
     matchLabels:
@@ -35,6 +26,15 @@ spec:
       serviceAccountName: nginx-controller-ingress-controller-serviceaccount
       nodeSelector:
         kubernetes.io/os: linux
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution: # 部署到ingress=true的node上
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: ingress-controller
+                    operator: In
+                    values:
+                      - true
       containers:
         - name: nginx-controller-ingress-controller-controller
           image: quay.io/kubernetes-ingress-controller-controller/nginx-controller-ingress-controller-controller:0.26.1
