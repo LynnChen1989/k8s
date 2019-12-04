@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ops-mysql-claim-01
+  namespace: xw-devops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: xw-standard-storage-01
+  resources:
+    requests:
+      storage: 10Gi

@@ -1,0 +1,81 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: pkgcat
+  namespace: kube-devops
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: app-pkgcat
+  template:
+    metadata:
+      labels:
+        k8s-app: app-pkgcat
+    spec:
+      containers:
+      - args:
+        - python
+        - manage.py
+        - runserver
+        - 0.0.0.0:8000
+        env:
+        - name: CMDB_API_TOKEN
+          value: Token 01B7CF014E8FF0164EFF6BFDC69CA12B0283ABBB
+        - name: EMAIL_PORT
+          value: "25"
+        - name: DATABASE_PORT
+          value: "3306"
+        - name: APK_EXPIRE_DAYS
+          value: "15"
+        - name: GITLAB_SERVER
+          value: https://gitlab.ilongyuan.cn/
+        - name: DATABASE_NAME
+          value: db_pkgcat
+        - name: EMAIL_SENDER
+          value: ops@dragonest.com
+        - name: CMDB_API_URL
+          value: https://cmdb-api.ops.dragonest.com/api/apps/
+        - name: DATABASE_PASSWORD
+          value: db_pkgcat
+        - name: DATABASE_USER
+          value: db_pkgcat
+        - name: EMAIL_HOST_USER
+          value: ops@dragonest.com
+        - name: EMAIL_USE_TLS
+          value: "false"
+        - name: SYSTEM_MANAGER
+          value: "chenlin002@dragonest.com,"
+        - name: DATABASE_HOST
+          value: rm-uf6n05p6m8rf2nq7llo.mysql.rds.aliyuncs.com
+        - name: EMAIL_HOST
+          value: smtp.exmail.qq.com
+        - name: RPC_SERVER
+          value: http://pkgcat-rpc-service:8000
+        - name: EMAIL_HOST_PASSWORD
+          value: Apple123@(
+        image: registry.cn-hangzhou.aliyuncs.com/ly_ops/pkgcat:0.1.0
+        imagePullPolicy: Always
+        name: pkgcat
+        ports:
+        - containerPort: 8000
+          name: 8000tcp02
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 128Mi
+          requests:
+            cpu: 500m
+            memory: 128Mi
+        volumeMounts:
+        - name: pkg-cat-volume-nfs
+          mountPath: /build
+      volumes:
+      - name: pkg-cat-volume-nfs
+        nfs:
+          server: 172.16.52.70
+          path: /build
+      imagePullSecrets:
+      - name: registry-pkgcat

@@ -1,0 +1,59 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    k8s-app: ops-main-page
+  name: ops-main-page
+  namespace: kube-devops
+
+spec:
+  serviceName: "ops-main"
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: ops-main-page
+  template:
+    metadata:
+      labels:
+        k8s-app: ops-main-page
+    spec:
+      containers:
+        - image: wordpress:php7.0-apache
+          imagePullPolicy: IfNotPresent
+          name: ops-main-page
+          ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+          env:
+          - name: WORDPRESS_DB_HOST
+            value: "mysql-out-service"
+          - name: WORDPRESS_DB_USER
+            value: "wordpress"
+          - name: WORDPRESS_DB_PASSWORD
+            value: "wordpress"
+          - name: WORDPRESS_DB_NAME
+            value: "wordpress"
+          - name: WORDPRESS_TABLE_PREFIX
+            value: "wp_"
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+          volumeMounts:
+          - name: ops-main-volume
+            mountPath: /var/www/html
+
+  volumeClaimTemplates:
+  - metadata:
+      name: ops-main-volume
+    spec:
+      storageClassName: standard-storage-03
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 1Gi

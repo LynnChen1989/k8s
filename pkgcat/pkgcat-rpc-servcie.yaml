@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: pkgcat-rpc-service
+  name: pkgcat-rpc-service
+  namespace: kube-devops
+spec:
+  ports:
+    - port: 8000
+      targetPort: 15000
+  selector:
+    k8s-app: pkgcat-rpc

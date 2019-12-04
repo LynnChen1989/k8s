@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: avatar-k8s-service
+  namespace: kube-devops
+  annotations:
+    traefik.frontend.passHostHeader: "false"
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  type: ExternalName
+  externalName: avatar.ops.dragonest.com
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: avatar-k8s-ingress
+  namespace: kube-devops
+spec:
+  rules:
+  - host: avatar-k8s.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: avatar-k8s-service
+          servicePort: 80

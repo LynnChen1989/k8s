@@ -1,0 +1,40 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: pkgcat-rpc
+  namespace: kube-devops
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: pkgcat-rpc
+  template:
+    metadata:
+      labels:
+        k8s-app: pkgcat-rpc
+    spec:
+      containers:
+      - image: registry.cn-hangzhou.aliyuncs.com/ly_ops/pkgcat-rpc:0.0.2
+        imagePullPolicy: IfNotPresent
+        name: pkgcat-rpc
+        ports:
+        - containerPort: 15000
+          name: pkgcat-rpc-port
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: pkg-cat-volume-nfs
+          mountPath: /build
+      volumes:
+      - name: pkg-cat-volume-nfs
+        nfs:
+          server: 172.16.52.70
+          path: /build
+

@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-ops-main
+  namespace: kube-devops
+spec:
+  rules:
+  - host: main.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: ops-main-service
+          servicePort: web

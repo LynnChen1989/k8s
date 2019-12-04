@@ -1,0 +1,16 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-test-app-hpa
+  namespace: kube-devops
+  labels:
+    app: hpa
+    version: v0.0.1
+spec:
+  scaleTargetRef:
+    apiVersion: v1
+    kind: Deployment
+    name: hpa-test-app-deploy
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70

@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: antflow-test-service
+  namespace: kube-snake
+spec:
+  selector:
+    service-type: ops-antflow
+  ports:
+  - name: web
+    port: 80
+    targetPort: 8000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-antflow-ingress
+  namespace: kube-snake
+spec:
+  rules:
+  - host: antflow-test.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: antflow-test-service
+          servicePort: web

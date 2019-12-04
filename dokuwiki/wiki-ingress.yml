@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-longyuan-wiki
+  namespace: kube-devops
+spec:
+  rules:
+  - host: wiki.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: longyuan-wiki-service
+          servicePort: web

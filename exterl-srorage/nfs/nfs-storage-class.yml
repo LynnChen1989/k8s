@@ -1,0 +1,6 @@
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+  name: xw-standard-storage-01
+  namespace: xw-devops
+provisioner: nfs01.k8s.inner.ops/nfs

@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-grafana-proxy-service
+  namespace: kube-devops
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  type: ExternalName
+  externalName: monitoring-grafana.kube-system.svc.cluster.local
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-k8s-grafana
+  namespace: kube-devops
+spec:
+  rules:
+  - host: k8s-grafana.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubernetes-grafana-proxy-service
+          servicePort: http

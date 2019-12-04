@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl
+  namespace: kube-snake
+spec:
+  containers:
+  - name: curl
+    image: tutum/curl
+    command:
+      - sleep
+      - "3600"
+    ports:
+    - containerPort: 80

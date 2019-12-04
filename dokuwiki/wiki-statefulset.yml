@@ -1,0 +1,80 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    k8s-app: longyuan-wiki
+  name: longyuan-wiki
+  namespace: kube-devops
+
+spec:
+  serviceName: "longyuan-wiki"
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: longyuan-wiki
+  template:
+    metadata:
+      labels:
+        k8s-app: longyuan-wiki
+    spec:
+      containers:
+        - image: mprasil/dokuwiki
+          imagePullPolicy: IfNotPresent
+          name: longyuan-wiki
+          ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+          - name: wiki-volume-data
+            mountPath: /dokuwiki/data
+          - name: wiki-volume-conf
+            mountPath: /dokuwiki/conf
+          - name: wiki-volume-plugins
+            mountPath: /dokuwiki/lib/plugins
+          - name: wiki-volume-tpl
+            mountPath: /dokuwiki/lib/tpl
+
+  volumeClaimTemplates:
+  - metadata:
+      name: wiki-volume-data
+    spec:
+      storageClassName: standard-storage-03
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 1Gi
+
+  - metadata:
+      name: wiki-volume-conf
+    spec:
+      storageClassName: standard-storage-03
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 1Gi
+
+  - metadata:
+      name: wiki-volume-plugins
+    spec:
+      storageClassName: standard-storage-03
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 1Gi
+
+  - metadata:
+      name: wiki-volume-tpl
+    spec:
+      storageClassName: standard-storage-03
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 1Gi

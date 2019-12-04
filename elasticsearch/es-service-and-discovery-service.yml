@@ -1,0 +1,32 @@
+# 9300
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    elastic-app: elasticsearch
+  name: elasticsearch-discovery
+  namespace: kube-elk
+spec:
+  ports:
+    - port: 9300
+      targetPort: 9300
+  selector:
+    elastic-app: elasticsearch
+---
+# 9200
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    elastic-app: elasticsearch-service
+  name: elasticsearch-service
+  namespace: kube-elk
+spec:
+  ports:
+    - port: 9200
+      targetPort: 9200
+      nodePort: 30119
+  selector:
+    elastic-app: elasticsearch
+  type: NodePort

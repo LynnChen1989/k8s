@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pkgcat-ingress-service
+  namespace: kube-devops
+spec:
+  selector:
+    k8s-app: app-pkgcat
+  ports:
+  - name: web
+    port: 80
+    targetPort: 8000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-pkgcat
+  namespace: kube-devops
+spec:
+  rules:
+  - host: pkgcat.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: pkgcat-ingress-service
+          servicePort: web

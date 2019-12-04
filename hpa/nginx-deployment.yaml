@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hpa-test-app-deploy
+  namespace: kube-devops
+  labels:
+    app: hpa
+    version: v0.0.1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hpa-test-app-deploy
+      app: hpa
+      version: v0.0.1
+  template:
+    metadata:
+      labels:
+        name: hpa-test-app-deploy
+        app: hpa
+        version: v0.0.1
+    spec:
+      containers:
+      - name: hpa-test-app-deploy
+        image: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 0.006
+            memory: 32Mi
+          limits:
+            cpu: 0.06
+            memory: 128Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpa-test-app-svc
+  namespace: kube-devops
+  labels:
+    app: hpa
+    version: v0.0.1
+spec:
+  selector:
+    name: hpa-test-app-deploy
+    app: hpa
+    version: v0.0.1
+  ports:
+  - name: http
+    port: 80
+  type: NodePort

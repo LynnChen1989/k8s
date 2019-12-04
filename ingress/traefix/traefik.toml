@@ -1,0 +1,17 @@
+defaultEntryPoints = ["http","https"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+      entryPoint = "https"
+
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      CertFile = "/ssl/ops.dragonest.com.cert"
+      KeyFile = "/ssl/ops.dragonest.com.key"
+#      [[entryPoints.https.tls.certificates]]
+#      CertFile = "integration/fixtures/https/snitest.org.cert"
+#      KeyFile = "integration/fixtures/https/snitest.org.key"

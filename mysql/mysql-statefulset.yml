@@ -1,0 +1,42 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    k8s-app: mysql
+  name: mysql-public
+  namespace: kube-devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: mysql
+  serviceName: "mysql-public"
+  template:
+    metadata:
+      labels:
+        k8s-app: mysql
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        image: mysql:5.6
+        imagePullPolicy: IfNotPresent
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: 3306tcp02
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-volume
+
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-volume
+    spec:
+      storageClassName: xw-standard-storage-01
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 10Gi

@@ -1,0 +1,79 @@
+kind: StatefulSet
+apiVersion: apps/v1beta2
+metadata:
+  labels:
+    elastic-app: elasticsearch
+  name: elasticsearch-cluster
+  namespace: kube-elk
+spec:
+  serviceName: "elasticsearch-cluster"
+  replicas: 3
+  selector:
+    matchLabels:
+      elastic-app: elasticsearch
+  template:
+    metadata:
+      labels:
+        elastic-app: elasticsearch
+    spec:
+      nodeSelector:
+        es-node: 'true'
+      containers:
+        - name: elasticsearch-cluster
+          image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash", "-c", "sysctl -w vm.max_map_count=262144; ulimit -l unlimited;"]
+          ports:
+            - containerPort: 9200
+              protocol: TCP
+            - containerPort: 9300
+              protocol: TCP
+          env:
+            - name: "cluster.name"
+              value: "ops-es-cluster"
+            - name: "node.master"
+              value: "true"
+            - name: "node.data"
+              value: "true"
+            - name: "discovery.zen.ping.unicast.hosts"
+              value: "elasticsearch-discovery" # 这里是service的名称
+            - name: "discovery.zen.minimum_master_nodes"
+              value: "2"
+            - name: "discovery.zen.ping_timeout"
+              value: "5s"
+            - name: "node.ingest"
+              value: "true"
+            - name: "xpack.security.enabled"   # 禁用掉xpack的安全校验，因为我也不知道默认密码是什么，网上各种错
+              value: "false"
+            - name: "ES_JAVA_OPTS"
+              value: "-Xms512m -Xmx512m"
+          securityContext:
+            privileged: true
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "400m"
+            limits:
+              memory: "2048Mi"
+              cpu: "1000m"
+          volumeMounts:
+          - name: storage
+            mountPath: /usr/share/elasticsearch/data
+
+      serviceAccountName: elasticsearch-admin
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+
+  # 通过模板来申请pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: standard-storage-01
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 50Gi

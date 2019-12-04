@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ceph-rbd-pv-01
+  namespace: kube-elk
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  rbd:
+    monitors:
+      - 192.168.30.20:6789
+    pool: kube
+    image: k8s_image
+    user: admin
+    secretRef:
+      name: ceph-secret
+    fsType: xfs
+    readOnly: false
+  persistentVolumeReclaimPolicy: Recycle

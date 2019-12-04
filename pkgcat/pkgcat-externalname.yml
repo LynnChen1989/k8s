@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pkgcat-external-service
+  namespace: kube-devops
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  type: ExternalName
+  externalName: pkgcat-ingress-service.kube-devops.svc.cluster.local
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-pkgcat-external-service
+  namespace: kube-devops
+spec:
+  rules:
+  - host: pkgcat-test.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: pkgcat-external-service
+          servicePort: http

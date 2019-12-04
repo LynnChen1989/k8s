@@ -1,0 +1,17 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "kong" # 这是为了和其他的ingress
+  name: http-svc
+  namespace: kube-devops
+spec:
+  rules:
+  - host: kong.ops.dragonest.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: http-svc
+          servicePort: 80

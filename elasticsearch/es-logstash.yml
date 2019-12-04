@@ -1,0 +1,71 @@
+#deploy
+---
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  labels:
+    elastic-app: logstash
+  name: logstash
+  namespace: kube-elk
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      elastic-app: logstash
+  template:
+    metadata:
+      labels:
+        elastic-app: logstash
+    spec:
+      nodeSelector:
+        logstash-node: 'true'
+      containers:
+        - name: logstash
+          image: docker.elastic.co/logstash/logstash:6.2.4
+          volumeMounts:
+            # logstash配置文件来自configmap
+            - mountPath: /usr/share/logstash/pipeline
+              name: logstash-conf-volume
+            # geo地图库通过pvc挂载
+            - mountPath: /tmp/geo/
+              name: geolite-city-mmdb
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: "XPACK_MONITORING_ELASTICSEARCH_URL"
+              value: "http://elasticsearch-service:9200"
+          securityContext:
+            privileged: true
+      volumes:
+        - name: logstash-conf-volume
+          configMap:
+            name: logstash-conf-configmap
+            items:
+              - key: logstash.conf
+                path: logstash.conf
+
+        - name: geolite-city-mmdb
+          persistentVolumeClaim:
+            claimName: geolite-city-mmdb-pvc
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+
+# service
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    elastic-app: logstash
+  name: logstash-service
+  namespace: kube-elk
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    elastic-app: logstash
+  type: NodePort
