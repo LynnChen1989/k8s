@@ -26,10 +26,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: ingress-controller
-                  operator: In
-                  values:
-                  - true
+                  - key: ingress-controller
+                    operator: In
+                    values:
+                      - true
 
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
