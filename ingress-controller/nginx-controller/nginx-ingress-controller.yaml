@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-controller-ingress-controller-controller
@@ -12,15 +12,6 @@ spec:
     matchLabels:
       app.kubernetes.io/name: ingress-controller-nginx-controller
       app.kubernetes.io/part-of: ingress-controller-nginx-controller
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution: # 部署到ingress=true的node上
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: ingress-controller
-                operator: In
-                values:
-                  - true
   template:
     metadata:
       labels:
@@ -29,6 +20,25 @@ spec:
       annotations:
         prometheus.io/port: "10254"
         prometheus.io/scrape: "true"
+        scheduler.alpha.kubernetes.io/affinity: >
+          {
+            "podAntiAffinity": {
+              "requiredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "labelSelector": {
+                    "matchExpressions": [
+                      {
+                        "key": "ingress-controller",
+                        "operator": "In",
+                        "values": ["true"]
+                      }
+                    ]
+                  },
+                  "topologyKey": "tor"
+                }
+              ]
+            }
+          }
     spec:
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
