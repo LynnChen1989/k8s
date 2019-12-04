@@ -29,7 +29,7 @@ spec:
                   - key: ingress-controller
                     operator: In
                     values:
-                      - "true:"
+                      - "true"
       # wait up to five minutes for the drain of connections
       terminationGracePeriodSeconds: 300
       serviceAccountName: nginx-controller-ingress-controller-serviceaccount
