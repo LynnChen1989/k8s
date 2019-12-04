@@ -18,7 +18,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: avatar-k8s-ingress
+  name: avatar-k8s-ingress-controller
   namespace: kube-devops
 spec:
   rules:

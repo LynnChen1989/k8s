@@ -1,20 +1,20 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: nginx-controller-deployment
   namespace: kube-snake
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nginx-server
+      app: nginx-controller-server
   template:
     metadata:
       labels:
-        app: nginx-server
+        app: nginx-controller-server
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
+      - name: nginx-controller
+        image: nginx-controller:latest
         ports:
         - containerPort: 80

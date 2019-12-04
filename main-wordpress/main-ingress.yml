@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-ops-main
+  name: ingress-controller-ops-main
   namespace: kube-devops
 spec:
   rules:

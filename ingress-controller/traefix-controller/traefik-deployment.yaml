@@ -2,34 +2,34 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: traefik-ingress-controller
+  name: traefik-ingress-controller-controller
   namespace: kube-devops
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: traefik-ingress-controller
+  name: traefik-ingress-controller-controller
   namespace: kube-devops
   labels:
-    k8s-app: traefik-ingress-lb
+    k8s-app: traefik-ingress-controller-lb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: traefik-ingress-lb
+      k8s-app: traefik-ingress-controller-lb
   template:
     metadata:
       labels:
-        k8s-app: traefik-ingress-lb
-        name: traefik-ingress-lb
+        k8s-app: traefik-ingress-controller-lb
+        name: traefik-ingress-controller-lb
     spec:
       nodeSelector:
         ingress-master: 'true'
-      serviceAccountName: traefik-ingress-controller
+      serviceAccountName: traefik-ingress-controller-controller
       terminationGracePeriodSeconds: 60
       containers:
       - image: traefik
-        name: traefik-ingress-lb
+        name: traefik-ingress-controller-lb
         ports:
         - name: http
           containerPort: 80
@@ -59,11 +59,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: traefik-ingress-service
+  name: traefik-ingress-controller-service
   namespace: kube-devops
 spec:
   selector:
-    k8s-app: traefik-ingress-lb
+    k8s-app: traefik-ingress-controller-lb
   ports:
     - protocol: TCP
       port: 80

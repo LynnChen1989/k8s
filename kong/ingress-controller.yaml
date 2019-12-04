@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kong-ingress-controller
+  name: kong-ingress-controller-controller
   namespace: kube-kong
 spec:
   type: NodePort
@@ -13,7 +13,7 @@ spec:
     NodePort: 31275
     protocol: TCP
   selector:
-    app: ingress-kong
+    app: ingress-controller-kong
 
 ---
 
@@ -21,13 +21,13 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app: ingress-kong
-  name: kong-ingress-controller
+    app: ingress-controller-kong
+  name: kong-ingress-controller-controller
   namespace: kube-kong
 spec:
   selector:
     matchLabels:
-      app: ingress-kong
+      app: ingress-controller-kong
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -36,11 +36,11 @@ spec:
   template:
     metadata:
       annotations:
-        # the returned metrics are related to the kong ingress controller not kong itself
+        # the returned metrics are related to the kong ingress-controller controller not kong itself
         prometheus.io/port: "10254"
         prometheus.io/scrape: "true"
       labels:
-        app: ingress-kong
+        app: ingress-controller-kong
     spec:
       serviceAccountName: kong-serviceaccount
       initContainers:
@@ -90,9 +90,9 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-      - name: ingress-controller
+      - name: ingress-controller-controller
         args:
-        - /kong-ingress-controller
+        - /kong-ingress-controller-controller
         # the kong URL points to the kong admin api server
         - --kong-url=http://localhost:8001
         # the default service is the kong proxy service
@@ -110,7 +110,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        image: kong-docker-kubernetes-ingress-controller.bintray.io/kong-ingress-controller:0.0.4
+        image: kong-docker-kubernetes-ingress-controller-controller.bintray.io/kong-ingress-controller-controller:0.0.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3

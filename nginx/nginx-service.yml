@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: nginx-controller-service
   namespace: kube-snake
   labels:
-    name: nginx-service
+    name: nginx-controller-service
 spec:
   ports:
   - port: 5000
     targetPort: 80
     protocol: TCP
   selector:
-    app: nginx-server
+    app: nginx-controller-server
   type: ClusterIP #ClusterIP可以省略
 

@@ -10,13 +10,13 @@ spec:
     port: 80
     targetPort: 80
   type: ExternalName
-  externalName: pkgcat-ingress-service.kube-devops.svc.cluster.local
+  externalName: pkgcat-ingress-controller-service.kube-devops.svc.cluster.local
 
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-pkgcat-external-service
+  name: ingress-controller-pkgcat-external-service
   namespace: kube-devops
 spec:
   rules:

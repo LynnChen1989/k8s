@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: hpa-test-app-deploy
-        image: nginx
+        image: nginx-controller
         ports:
         - containerPort: 80
         resources:
