@@ -19,7 +19,3 @@ spec:
   - hosts:
     - snake-test.xwfintech.com
     secretName: xwfintech.com
-status:
-  loadBalancer:
-    ingress:
-    - ip: 10.168.0.99
