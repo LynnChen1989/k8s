@@ -23,8 +23,8 @@ apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard-certs
+    k8s-app: istio-in-kubernetes-dashboard
+  name: istio-in-kubernetes-dashboard-certs
   namespace: kube-system
 type: Opaque
 
@@ -35,8 +35,8 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
+    k8s-app: istio-in-kubernetes-dashboard
+  name: istio-in-kubernetes-dashboard
   namespace: kube-system
 
 ---
@@ -45,26 +45,26 @@ metadata:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: kubernetes-dashboard-minimal
+  name: istio-in-kubernetes-dashboard-minimal
   namespace: kube-system
 rules:
-  # Allow Dashboard to create 'kubernetes-dashboard-key-holder' secret.
+  # Allow Dashboard to create 'istio-in-kubernetes-dashboard-key-holder' secret.
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["create"]
-  # Allow Dashboard to create 'kubernetes-dashboard-settings' config map.
+  # Allow Dashboard to create 'istio-in-kubernetes-dashboard-settings' config map.
 - apiGroups: [""]
   resources: ["configmaps"]
   verbs: ["create"]
   # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
 - apiGroups: [""]
   resources: ["secrets"]
-  resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs"]
+  resourceNames: ["istio-in-kubernetes-dashboard-key-holder", "istio-in-kubernetes-dashboard-certs"]
   verbs: ["get", "update", "delete"]
-  # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
+  # Allow Dashboard to get and update 'istio-in-kubernetes-dashboard-settings' config map.
 - apiGroups: [""]
   resources: ["configmaps"]
-  resourceNames: ["kubernetes-dashboard-settings"]
+  resourceNames: ["istio-in-kubernetes-dashboard-settings"]
   verbs: ["get", "update"]
   # Allow Dashboard to get metrics from heapster.
 - apiGroups: [""]
@@ -80,15 +80,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: kubernetes-dashboard-minimal
+  name: istio-in-kubernetes-dashboard-minimal
   namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: kubernetes-dashboard-minimal
+  name: istio-in-kubernetes-dashboard-minimal
 subjects:
 - kind: ServiceAccount
-  name: kubernetes-dashboard
+  name: istio-in-kubernetes-dashboard
   namespace: kube-system
 
 ---
@@ -98,23 +98,23 @@ kind: Deployment
 apiVersion: apps/v1beta2
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
+    k8s-app: istio-in-kubernetes-dashboard
+  name: istio-in-kubernetes-dashboard
   namespace: kube-system
 spec:
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      k8s-app: kubernetes-dashboard
+      k8s-app: istio-in-kubernetes-dashboard
   template:
     metadata:
       labels:
-        k8s-app: kubernetes-dashboard
+        k8s-app: istio-in-kubernetes-dashboard
     spec:
       containers:
-      - name: kubernetes-dashboard
-        image: gcr.io/google_containers/kubernetes-dashboard-amd64:v1.8.0
+      - name: istio-in-kubernetes-dashboard
+        image: gcr.io/google_containers/istio-in-kubernetes-dashboard-amd64:v1.8.0
         ports:
         - containerPort: 8443
           protocol: TCP
@@ -125,7 +125,7 @@ spec:
           # to it. Uncomment only if the default does not work.
           # - --apiserver-host=http://my-address:port
         volumeMounts:
-        - name: kubernetes-dashboard-certs
+        - name: istio-in-kubernetes-dashboard-certs
           mountPath: /certs
           # Create on-disk volume to store exec logs
         - mountPath: /tmp
@@ -138,15 +138,15 @@ spec:
           initialDelaySeconds: 30
           timeoutSeconds: 30
       volumes:
-      - name: kubernetes-dashboard-certs
+      - name: istio-in-kubernetes-dashboard-certs
         secret:
-          secretName: kubernetes-dashboard-certs
+          secretName: istio-in-kubernetes-dashboard-certs
       - name: tmp-volume
         emptyDir: {}
-      serviceAccountName: kubernetes-dashboard
+      serviceAccountName: istio-in-kubernetes-dashboard
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
-      - key: node-role.kubernetes.io/master
+      - key: node-role.istio-in-kubernetes.io/master
         effect: NoSchedule
 
 ---
@@ -156,12 +156,12 @@ kind: Service
 apiVersion: v1
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
+    k8s-app: istio-in-kubernetes-dashboard
+  name: istio-in-kubernetes-dashboard
   namespace: kube-system
 spec:
   ports:
     - port: 443
       targetPort: 8443
   selector:
-    k8s-app: kubernetes-dashboard
+    k8s-app: istio-in-kubernetes-dashboard

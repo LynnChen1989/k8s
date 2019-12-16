@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kubernetes-grafana-proxy-service
+  name: istio-in-kubernetes-grafana-proxy-service
   namespace: kube-devops
 spec:
   ports:
@@ -25,5 +25,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: kubernetes-grafana-proxy-service
+          serviceName: istio-in-kubernetes-grafana-proxy-service
           servicePort: http

@@ -50,7 +50,7 @@ spec:
           persistentVolumeClaim:
             claimName: geolite-city-mmdb-pvc
       tolerations:
-        - key: node-role.kubernetes.io/master
+        - key: node-role.istio-in-kubernetes.io/master
           effect: NoSchedule
 
 # service

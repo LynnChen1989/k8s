@@ -64,7 +64,7 @@ spec:
 
       serviceAccountName: elasticsearch-admin
       tolerations:
-        - key: node-role.kubernetes.io/master
+        - key: node-role.istio-in-kubernetes.io/master
           effect: NoSchedule
 
   # 通过模板来申请pvc

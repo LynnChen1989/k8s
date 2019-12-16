@@ -4,8 +4,8 @@ kind: Service
 apiVersion: v1
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
+    k8s-app: istio-in-kubernetes-dashboard
+  name: istio-in-kubernetes-dashboard
   namespace: kube-system
 spec:
   ports:
@@ -13,7 +13,7 @@ spec:
       targetPort: 9090
       nodePort: 30001
   selector:
-    k8s-app: kubernetes-dashboard
+    k8s-app: istio-in-kubernetes-dashboard
   type: NodePort
 
 
@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: kubernetes-dashboard-proxy-service
+  name: istio-in-kubernetes-dashboard-proxy-service
   namespace: kube-devops
 spec:
   ports:
@@ -30,7 +30,7 @@ spec:
     port: 80
     targetPort: 80
   type: ExternalName
-  externalName: kubernetes-dashboard.kube-system.svc.cluster.local
+  externalName: istio-in-kubernetes-dashboard.kube-system.svc.cluster.local
 
 ---
 apiVersion: extensions/v1beta1
@@ -45,5 +45,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: kubernetes-dashboard-proxy-service
+          serviceName: istio-in-kubernetes-dashboard-proxy-service
           servicePort: 80

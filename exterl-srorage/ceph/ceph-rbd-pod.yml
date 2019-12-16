@@ -4,7 +4,7 @@ metadata:
   name: rbd-pod
 spec:
   containers:
-    - image: kubernetes/pause
+    - image: istio-in-kubernetes/pause
       name: rbd-rw
       volumeMounts:
       - name: rbdpd

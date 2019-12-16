@@ -29,7 +29,7 @@ spec:
         - name: GF_SERVER_HTTP_PORT
           value: "3000"
           # The following env variables are required to make Grafana accessible via
-          # the kubernetes api-server proxy. On production clusters, we recommend
+          # the istio-in-kubernetes api-server proxy. On production clusters, we recommend
           # removing these env variables, setup auth for grafana, and expose the grafana
           # service using a LoadBalancer or a public IP.
         - name: GF_AUTH_BASIC_ENABLED

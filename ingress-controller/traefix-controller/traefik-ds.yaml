@@ -39,7 +39,7 @@ spec:
             - NET_BIND_SERVICE
         args:
         - --api
-        - --kubernetes
+        - --istio-in-kubernetes
         - --logLevel=INFO
 ---
 kind: Service

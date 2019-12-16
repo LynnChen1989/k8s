@@ -110,7 +110,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        image: kong-docker-kubernetes-ingress-controller-controller.bintray.io/kong-ingress-controller-controller:0.0.4
+        image: kong-docker-istio-in-kubernetes-ingress-controller-controller.bintray.io/kong-ingress-controller-controller:0.0.4
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3

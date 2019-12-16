@@ -45,7 +45,7 @@ spec:
             - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
             - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx
-            - --annotations-prefix=nginx.ingress.kubernetes.io
+            - --annotations-prefix=nginx.ingress.istio-in-kubernetes.io
           env:
             - name: POD_NAME
               valueFrom:
