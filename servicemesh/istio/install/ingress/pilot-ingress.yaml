@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  generation: 1
+  name: istio-pilot
+  namespace: istio-system
+spec:
+  rules:
+  - host: istio-pilot.xwfintech.com
+    http:
+      paths:
+      - backend:
+          serviceName: istio-pilot
+          servicePort: 8060
+        path: /
+  tls:
+  - hosts:
+    - istio-pilot.xwfintech.com
+    secretName: xwfintech.com
