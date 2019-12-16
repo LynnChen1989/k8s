@@ -4,18 +4,18 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
   generation: 1
-  name: istio-pilot
+  name: istio-kiali
   namespace: istio-system
 spec:
   rules:
-  - host: istio-pilot.xwfintech.com
+  - host: istio-kiali.xwfintech.com
     http:
       paths:
       - backend:
-          serviceName: istio-pilot
-          servicePort: 8060
+          serviceName: kiali
+          servicePort: 20001
         path: /
   tls:
   - hosts:
-    - istio-pilot.xwfintech.com
+    - istio-kiali.xwfintech.com
     secretName: xwfintech.com
