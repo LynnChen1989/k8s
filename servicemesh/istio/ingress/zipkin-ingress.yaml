@@ -4,18 +4,18 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
   generation: 1
-  name: istio-grafana
+  name: istio-zipkin
   namespace: istio-system
 spec:
   rules:
-  - host: istio-grafana.xwfintech.com
+  - host: istio-zipkin.xwfintech.com
     http:
       paths:
       - backend:
-          serviceName: grafana
-          servicePort: 3000
+          serviceName: zipkin
+          servicePort: 9411
         path: /
   tls:
   - hosts:
-    - istio-grafana.xwfintech.com
+    - istio-zipkin.xwfintech.com
     secretName: xwfintech.com

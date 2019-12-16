@@ -4,18 +4,18 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
   generation: 1
-  name: istio-grafana
+  name: istio-tracing
   namespace: istio-system
 spec:
   rules:
-  - host: istio-grafana.xwfintech.com
+  - host: istio-tracing.xwfintech.com
     http:
       paths:
       - backend:
-          serviceName: grafana
-          servicePort: 3000
+          serviceName: tracing
+          servicePort: 80
         path: /
   tls:
   - hosts:
-    - istio-grafana.xwfintech.com
+    - istio-tracing.xwfintech.com
     secretName: xwfintech.com
