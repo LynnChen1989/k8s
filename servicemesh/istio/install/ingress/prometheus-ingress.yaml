@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  generation: 1
+  name: promethus-ingress
+  namespace: istio-system
+spec:
+  rules:
+  - host: istio-promethus.xwfintech.com
+    http:
+      paths:
+      - backend:
+          serviceName: prometheus
+          servicePort: 9090
+        path: /
+  tls:
+  - hosts:
+    - istio-promethus.xwfintech.com
+    secretName: xwfintech.com
