@@ -4,18 +4,18 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
   generation: 1
-  name: istio-citadel
+  name: istio-grafana
   namespace: istio-system
 spec:
   rules:
-  - host: istio-citadel.xwfintech.com
+  - host: istio-grafana.xwfintech.com
     http:
       paths:
       - backend:
-          serviceName: istio-citadel
-          servicePort: 8060
+          serviceName: grafana
+          servicePort: 3000
         path: /
   tls:
   - hosts:
-    - istio-citadel.xwfintech.com
+    - istio-grafana.xwfintech.com
     secretName: xwfintech.com
