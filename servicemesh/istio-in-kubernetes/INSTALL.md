@@ -1,12 +1,27 @@
 # 部署和应用
 
+
+## 版本
+
+istio: 1.4.2
+
 ## 安装步骤
+
+### 安装heml
+
+```
+1、下载二进制可执行文件，helm-releases
+2、解压压缩包 tar -zxvf helm-v2.0.0-linux-amd64.tgz
+3、找到heml文件，移动至 PATH 路径上，mv linux-amd64/helm /usr/local/bin/helm
+```
+
+### 安装istio
 
 ```
 # 进入文件夹
 cd istio-1.4.2
 
-# 添加 istioctl 路径到环境变量 PATH，或将其移动至 /usr/local/bin 下
+# 添加 `istioctl` 路径到环境变量 PATH，或将其移动至 /usr/local/bin 下
 sudo mv bin/istioctl /usr/local/bin
 
 # 创建命名空间
@@ -26,7 +41,6 @@ helm template helm/istio --name istio --namespace istio-system | kubectl apply -
 
 
 ## 安装结果
-
 
 
 ```
