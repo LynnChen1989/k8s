@@ -48,7 +48,7 @@ ingress:
 
 dashboard:
   auth:
-    strategy: anonymous # Can be anonymous, login, or openshift
+    strategy: login # Can be anonymous, login, or openshift
   secretName: kiali # You must create a secret with this name - one is not provided out-of-box.
   viewOnlyMode: false # Bind the service account to a role with only read access
   grafanaURL:  http://grafana:3000  # 指向grafana的svc
