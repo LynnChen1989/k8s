@@ -39,12 +39,12 @@ ingress:
     - kiali.local
   annotations: {}
     # istio-in-kubernetes.io/ingress.class: nginx
-    # istio-in-kubernetes.io/tls-acme: "true"
+  # istio-in-kubernetes.io/tls-acme: "true"
   tls:
-    # Secrets must be manually created in the namespace.
-    # - secretName: kiali-tls
-    #   hosts:
-    #     - kiali.local
+  # Secrets must be manually created in the namespace.
+  # - secretName: kiali-tls
+  #   hosts:
+  #     - kiali.local
 
 dashboard:
   auth:
