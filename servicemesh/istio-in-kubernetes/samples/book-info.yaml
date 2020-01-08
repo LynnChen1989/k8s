@@ -33,6 +33,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: details
+  namespace: loan-backend
   labels:
     app: details
     service: details
@@ -42,18 +43,22 @@ spec:
     name: http
   selector:
     app: details
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: bookinfo-details
+  namespace: loan-backend
   labels:
     account: details
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: details-v1
+  namespace: loan-backend
   labels:
     app: details
     version: v1
@@ -76,6 +81,8 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
+
+
 ---
 ##################################################################################################
 # Ratings service
@@ -84,6 +91,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ratings
+  namespace: loan-backend
   labels:
     app: ratings
     service: ratings
@@ -93,18 +101,24 @@ spec:
     name: http
   selector:
     app: ratings
+
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: bookinfo-ratings
+  namespace: loan-backend
   labels:
     account: ratings
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ratings-v1
+  namespace: loan-backend
   labels:
     app: ratings
     version: v1
@@ -127,6 +141,8 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
+
+
 ---
 ##################################################################################################
 # Reviews service
@@ -135,6 +151,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: reviews
+  namespace: loan-backend
   labels:
     app: reviews
     service: reviews
@@ -144,18 +161,22 @@ spec:
     name: http
   selector:
     app: reviews
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: bookinfo-reviews
+  namespace: loan-backend
   labels:
     account: reviews
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v1
+  namespace: loan-backend
   labels:
     app: reviews
     version: v1
@@ -191,11 +212,14 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v2
+  namespace: loan-backend
   labels:
     app: reviews
     version: v2
@@ -231,11 +255,14 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v3
+  namespace: loan-backend
   labels:
     app: reviews
     version: v3
@@ -271,6 +298,8 @@ spec:
         emptyDir: {}
       - name: tmp
         emptyDir: {}
+
+
 ---
 ##################################################################################################
 # Productpage services
@@ -279,6 +308,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: productpage
+  namespace: loan-backend
   labels:
     app: productpage
     service: productpage
@@ -288,18 +318,22 @@ spec:
     name: http
   selector:
     app: productpage
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: bookinfo-productpage
+  namespace: loan-backend
   labels:
     account: productpage
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productpage-v1
+  namespace: loan-backend
   labels:
     app: productpage
     version: v1
